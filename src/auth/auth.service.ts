@@ -1,19 +1,9 @@
 /* eslint-disable no-useless-constructor */
-import { Injectable, UnauthorizedException } from '@nestjs/common'
+
 import { UserService } from 'src/user/user.service'
 
-@Injectable()
-export class AuthService {
-  constructor(private readonly userService: UserService) {}
+export abstract class AuthService {
+  constructor(protected userService: UserService) {}
 
-  async signIn(email: string, pass: string) {
-    const user = await this.userService.findOne(email)
-    if (user?.password !== pass) {
-      throw new UnauthorizedException()
-    }
-
-    // const { password, ...result } = user
-    // TODO
-    return pass
-  }
+  abstract signIn(email: string, pass: string): Promise<string>
 }
