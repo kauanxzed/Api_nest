@@ -1,6 +1,6 @@
-import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UserService } from './user.service'
+import { CreateUserDto } from './dto/create-user.dto'
+import { UpdateUserDto } from './dto/update-user.dto'
 import {
   Body,
   Controller,
@@ -10,35 +10,37 @@ import {
   Param,
   Post,
   Put,
-} from '@nestjs/common';
+} from '@nestjs/common'
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) {
+    this.userService = userService
+  }
 
   @Post()
   @HttpCode(204)
   create(@Body() createUserDto: CreateUserDto) {
-    this.userService.create(createUserDto);
+    this.userService.create(createUserDto)
   }
 
   @Get()
   findAll() {
-    return this.userService.findAll();
+    return this.userService.findAll()
   }
 
   @Get(':email')
   findOne(@Param('email') email: string) {
-    return this.userService.findOne(email);
+    return this.userService.findOne(email)
   }
 
   @Put(':email')
   update(@Param('email') email: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(email, updateUserDto);
+    return this.userService.update(email, updateUserDto)
   }
 
   @Delete(':email')
   delete(@Param('email') email: string) {
-    return this.userService.delete(email);
+    return this.userService.delete(email)
   }
 }

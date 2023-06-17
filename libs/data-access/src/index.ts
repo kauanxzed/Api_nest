@@ -1,2 +1,2 @@
-export * from './lib/infraestructure';
-export * from './lib/ports';
+export * from './lib/infraestructure'
+export * from './lib/ports'
