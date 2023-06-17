@@ -1,38 +1,16 @@
-import { Injectable } from '@nestjs/common'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { Repository } from '@app/data-access'
 import { User } from './entity/user.schema'
-import { InjectModel } from '@nestjs/mongoose'
-import { Model } from 'mongoose'
-import encrypter from '@app/tools/helpers/encrypter'
 
-@Injectable()
-export class UserService extends Repository<User, 'email'> {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {
-    super()
-  }
+export abstract class UserService extends Repository<User, 'email'> {
+  abstract findOne(key: string): Promise<User>
 
-  findOne(key: string): Promise<User> {
-    return this.userModel.findOne({ email: key })
-  }
+  abstract findAll(): Promise<User[]>
 
-  findAll(): Promise<User[]> {
-    return this.userModel.find()
-  }
+  abstract create(entity: CreateUserDto): Promise<void>
 
-  create(entity: CreateUserDto): Promise<void> {
-    encrypter.encrypt(entity.password).then((res) => {
-      entity.password = res
-      this.userModel.create(entity)
-    })
-  }
+  abstract update(key: string, entity: UpdateUserDto): Promise<void>
 
-  update(key: string, entity: UpdateUserDto): Promise<void> {
-    this.userModel.updateOne({ email: key }, entity)
-  }
-
-  delete(key: string): Promise<void> {
-    this.userModel.deleteOne({ email: key })
-  }
+  abstract delete(key: string): Promise<void>
 }
